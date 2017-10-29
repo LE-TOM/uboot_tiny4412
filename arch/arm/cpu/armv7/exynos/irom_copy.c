@@ -235,14 +235,26 @@ void emmc_4_4_endbootOp_eMMC(void)
 
 void movi_write_env(ulong addr)
 {
+	char run_cmd[32];
+
+	sprintf(run_cmd,"emmc open 0");
+	run_command(run_cmd, 0);
 	movi_write(0, raw_area_control.image[4].start_blk,
 			raw_area_control.image[4].used_blk, addr);
+	sprintf(run_cmd,"emmc close 0");
+	run_command(run_cmd, 0);
 }
 
 void movi_read_env(ulong addr)
 {
+	char run_cmd[32];
+
+	sprintf(run_cmd,"emmc open 0");
+	run_command(run_cmd, 0);
 	movi_read(0, raw_area_control.image[4].start_blk,
 			raw_area_control.image[4].used_blk, addr);
+	sprintf(run_cmd,"emmc close 0");
+	run_command(run_cmd, 0);
 }
 
 void movi_write_bl1(ulong addr, int dev_num)

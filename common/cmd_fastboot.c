@@ -589,7 +589,8 @@ static int write_to_ptn_sdmmc(struct fastboot_ptentry *ptn, unsigned int addr, u
 		/* use the partition name that can be understood by a command, movi */
 		if (!strcmp(ptn->name, "bootloader"))
 		{
-			if (INF_REG3_REG == 7){
+			if (INF_REG3_REG == 7)
+			{
 				argv[2] = part2;
 				argv[3] = part;
 				argv[4] = dev_num;

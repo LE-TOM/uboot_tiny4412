@@ -423,8 +423,29 @@ int get_mmc_part_info(char *device_name, int part_num, unsigned long long *block
 int print_mmc_part_info(int argc, char *argv[])
 {
 	int		rv;
+	int		total_block_count;
 
 	PartitionInfo	partInfo[4];
+	SDInfo		sdInfo;
+
+/******************debug print***********************************/
+	total_block_count = get_mmc_block_count(argv[2]);
+	memset((unsigned char *)&sdInfo, 0x00, sizeof(SDInfo));
+	get_SDInfo(total_block_count, &sdInfo);
+	printf("\n");
+	printf("total_block_count: %d \n", total_block_count);
+	printf("sdInfo.C_start: %d \n", sdInfo.C_start);
+	printf("sdInfo.H_start: %d \n", sdInfo.H_start);
+	printf("sdInfo.S_start: %d \n", sdInfo.S_start);
+	printf("sdInfo.C_end: %d \n", sdInfo.C_end);
+	printf("sdInfo.H_end: %d \n", sdInfo.H_end);
+	printf("sdInfo.S_end: %d \n", sdInfo.S_end);
+	printf("sdInfo.available_block: %d \n", sdInfo.available_block);
+	printf("sdInfo.unit: %d \n", sdInfo.unit);
+	printf("sdInfo.total_block_count: %d \n", sdInfo.total_block_count);
+	printf("sdInfo.addr_mode: %d \n", sdInfo.addr_mode);
+
+/*********************************************************/
 	
 	rv = get_mmc_part_info(argv[2], 1, &(partInfo[0].block_start), &(partInfo[0].block_count),
 			&(partInfo[0].partitionId) );

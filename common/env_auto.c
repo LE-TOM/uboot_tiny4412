@@ -288,8 +288,9 @@ int saveenv_movinand(void)
 	env_ptr->crc   = crc32(0, env_ptr->data, ENV_SIZE);
 
 	mmc_init(find_mmc_device(0));
-        movi_write_env(virt_to_phys((ulong)env_ptr));
-        puts("done\n");
+	movi_write_env(virt_to_phys((ulong)env_ptr));
+	
+	puts("done\n");
 
 	return 1;
 }
@@ -407,18 +408,29 @@ int saveenv(void)
 #else
         if (INF_REG3_REG == 1) {
 #if defined (CONFIG_CMD_ONENAND)
+		printf("INF_REG3_REG == 1\n");
 		saveenv_onenand();
 #endif
 	} else if (INF_REG3_REG == 0x40000) {
 #if defined (CONFIG_CMD_NAND)
+		printf("INF_REG3_REG == 0x40000\n");
 		saveenv_nand();
 #endif
 	} else if (INF_REG3_REG == 3)
+	{
+		printf("INF_REG3_REG == 3\n");
 		saveenv_movinand();
+	}
 	else if (INF_REG3_REG == 6)
+	{
+		printf("INF_REG3_REG == 6\n");
 		saveenv_movinand();
+	}
 	else if (INF_REG3_REG == 7)
+	{
+		printf("INF_REG3_REG == 7\n");
 		saveenv_movinand();
+	}
 	else
 		printf("Unknown boot device\n");
 #endif /* CONFIG_S5P6450 */

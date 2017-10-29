@@ -81,7 +81,7 @@ int init_raw_area_table(block_dev_desc_t * dev_desc, int location)
 		image[4].start_blk = image[4].start_blk + 1;
 
 	/* image 5 should be kernel */
-	image[5].start_blk = image[4].start_blk + MOVI_ENV_BLKCNT;
+	image[5].start_blk = 2;//image[4].start_blk + MOVI_ENV_BLKCNT;
 	image[5].used_blk = MOVI_ZIMAGE_BLKCNT;
 	image[5].size = PART_SIZE_KERNEL;
 	image[5].attribute = 0x4;
