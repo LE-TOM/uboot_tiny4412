@@ -119,13 +119,17 @@ int do_bootm_linux(int flag, int argc, char *argv[], bootm_headers_t *images)
 	if(ret)
 		printf("[err] boot_get_ramdisk\n");
 
-	show_boot_progress (15);
+	show_boot_progress(15);
 
 #ifdef CONFIG_OF_LIBFDT
+	printf("images->ft_len: %d\n", images->ft_len);
 	if (images->ft_len)
+ 	{
+		printf("before bootm_linux_fdt\n");
 		return bootm_linux_fdt(machid, images);
+	 }
 #endif
-
+	printf("before images->ep\n");
 	kernel_entry = (void (*)(int, int, uint))images->ep;
 
 	debug ("## Transferring control to Linux (at address %08lx) ...\n",
@@ -144,23 +148,33 @@ int do_bootm_linux(int flag, int argc, char *argv[], bootm_headers_t *images)
 	setup_revision_tag (&params);
 #endif
 #ifdef CONFIG_SETUP_MEMORY_TAGS
+	printf("before setup_memory_tags\n");
 	setup_memory_tags (bd);
 #endif
 #ifdef CONFIG_CMDLINE_TAG
+	printf("before setup_commandline_tag\n");
 	setup_commandline_tag (bd, commandline);
 #endif
 #ifdef CONFIG_INITRD_TAG
 	if (images->rd_start && images->rd_end)
+	{
+		printf("before setup_initrd_tag\n");
 		setup_initrd_tag (bd, images->rd_start, images->rd_end);
+	}
 #endif
 	setup_end_tag(bd);
 #endif
 
 	announce_and_cleanup();
+	printf("after announce_and_cleanup\n");
 
 #ifdef CONFIG_ENABLE_MMU
+	printf("before theLastJump\n");
+	printf("machid: 0x%X\n", machid);
 	theLastJump((void *)virt_to_phys(kernel_entry), machid, bd->bi_boot_params);
+	printf("after theLastJump\n");
 #else
+	printf("before kernel_entry\n");
 	kernel_entry(0, machid, bd->bi_boot_params);
 	/* does not return */
 #endif
