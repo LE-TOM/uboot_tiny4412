@@ -94,11 +94,18 @@ int do_movi(cmd_tbl_t * cmdtp, int flag, int argc, char *argv[])
 			goto usage;
 		attribute = 0x4;
 		break;
+	case 'd':
+		if (argc != 5)
+			goto usage;
+		attribute = 0x5;
+		break;
 	case 'r':
 		if (argc != 6)
 			goto usage;
 		attribute = 0x8;
 		break;
+	
+	
 	case 't':
 		if (argc != (6 - location))
 			goto usage;
@@ -200,6 +207,25 @@ int do_movi(cmd_tbl_t * cmdtp, int flag, int argc, char *argv[])
 		return 1;
 	}
 
+	/* dtb r/w */
+	if (attribute == 0x5) {
+		for (i=0, image = raw_area_control.image; i<15; i++) {
+			if (image[i].attribute == attribute)
+				break;
+		}
+		start_blk = image[i].start_blk;
+		blkcnt = image[i].used_blk;
+		printf("%s dtb..device %d Start %ld, Count %ld ", rw ? "writing" : "reading",
+			dev_num, start_blk, blkcnt);
+		sprintf(run_cmd, "mmc %s %d 0x%lx 0x%lx 0x%lx",
+			rw ? "write" : "read", dev_num,
+			addr, start_blk, blkcnt);
+		run_command(run_cmd, dev_num);
+		printf("completed\n");
+		return 1;
+	}
+
+
 	/* root file system r/w */
 	if (attribute == 0x8) {
 		rfs_size = simple_strtoul(argv[5], NULL, 16);
@@ -253,8 +279,8 @@ U_BOOT_CMD(
 	"init - Initialize moviNAND and show card info\n"
 	"movi read zero {fwbl1 | u-boot} {device_number} {addr} - Read data from sd/mmc\n"
 	"movi write zero {fwbl1 | u-boot} {device_number} {addr} - Read data from sd/mmc\n"
-	"movi read {u-boot | kernel} {device_number} {addr} - Read data from sd/mmc\n"
-	"movi write {fwbl1 | u-boot | kernel} {device_number} {addr} - Write data to sd/mmc\n"
+	"movi read {u-boot | kernel | dtb} {device_number} {addr} - Read data from sd/mmc\n"
+	"movi write {fwbl1 | u-boot | kernel | dtb} {device_number} {addr} - Write data to sd/mmc\n"
 	"movi read rootfs {device_number} {addr} [bytes(hex)] - Read rootfs data from sd/mmc by size\n"
 	"movi write rootfs {device_number} {addr} [bytes(hex)] - Write rootfs data to sd/mmc by size\n"
 	"movi read {sector#} {device_number} {bytes(hex)} {addr} - instead of this, you can use \"mmc read\"\n"

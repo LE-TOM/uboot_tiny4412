@@ -96,13 +96,21 @@ int init_raw_area_table(block_dev_desc_t * dev_desc, int location)
 	strcpy(image[6].description, "rfs");
 	dbg("rfs: %d\n", image[6].start_blk);
 
-	/* image 7 should be bl2 */
-	image[7].start_blk = image[0].start_blk + MOVI_FWBL1_BLKCNT;
-	image[7].used_blk = MOVI_BL1_BLKCNT;
-	image[7].size = PART_SIZE_BL1;
-	image[7].attribute = 0x3;
-	strcpy(image[7].description, "bl2");
-	dbg("bl2: %d\n", image[7].start_blk);
+	/* image 7 should be dtb */
+	image[7].start_blk = image[6].start_blk + MOVI_ROOTFS_BLKCNT;
+	image[7].used_blk = MOVI_DTB_BLKCNT;
+	image[7].size = PART_SIZE_DTB;
+	image[7].attribute = 0x5;
+	strcpy(image[7].description, "dtb");
+	dbg("dtb: %d\n", image[7].start_blk);
+
+	/* image 8 should be bl2 */
+	image[8].start_blk = image[0].start_blk + MOVI_FWBL1_BLKCNT;
+	image[8].used_blk = MOVI_BL1_BLKCNT;
+	image[8].size = PART_SIZE_BL1;
+	image[8].attribute = 0x3;
+	strcpy(image[8].description, "bl2");
+	dbg("bl2: %d\n", image[8].start_blk);
 
 	for (i=8; i<15; i++) {
 		raw_area_control.image[i].start_blk = 0;

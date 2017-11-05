@@ -1555,6 +1555,13 @@ static int set_partition_table_sdmmc()
 	ptable[pcount].flags = FASTBOOT_PTENTRY_FLAGS_USE_MOVI_CMD;
 	pcount++;
 
+	/* dtb */
+	strcpy(ptable[pcount].name, "dtb");
+	ptable[pcount].start = 0;
+	ptable[pcount].length = PART_SIZE_DTB;
+	ptable[pcount].flags = FASTBOOT_PTENTRY_FLAGS_USE_MOVI_CMD;
+	pcount++;
+
 	/* System */
 	get_mmc_part_info(dev_num, 2, &start, &count, &pid);
 	if (pid != 0x83)
