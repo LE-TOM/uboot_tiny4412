@@ -521,7 +521,7 @@ static int write_to_ptn_sdmmc(struct fastboot_ptentry *ptn, unsigned int addr, u
 			sprintf(buffer, "0x%x", addr);
 			sprintf(start, "0x%x", (ptn->start / CFG_FASTBOOT_SDMMC_BLOCKSIZE));
 			sprintf(length, "0x%x", (ptn->length / CFG_FASTBOOT_SDMMC_BLOCKSIZE));
-
+			printf("No Compressed ext4 image\n");
 			ret = do_mmcops(NULL, 0, 6, argv);
 		} else {
 			uint bl_st = ptn->start / CFG_FASTBOOT_SDMMC_BLOCKSIZE;
