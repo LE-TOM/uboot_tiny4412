@@ -14,6 +14,7 @@
 #include <command.h>
 #include <mmc.h>
 #include <asm/arch/movi_partition.h>
+// #include <linux/string.h>
 
 #if defined(CONFIG_S5P6450)
 DECLARE_GLOBAL_DATA_PTR;
@@ -192,7 +193,7 @@ int do_movi(cmd_tbl_t * cmdtp, int flag, int argc, char *argv[])
 	/* kernel r/w */
 	if (attribute == 0x4) {
 		for (i=0, image = raw_area_control.image; i<15; i++) {
-			if (image[i].attribute == attribute)
+			if (strcmp(image[i].description, argv[2]) == 0)
 				break;
 		}
 		start_blk = image[i].start_blk;
@@ -279,8 +280,8 @@ U_BOOT_CMD(
 	"init - Initialize moviNAND and show card info\n"
 	"movi read zero {fwbl1 | u-boot} {device_number} {addr} - Read data from sd/mmc\n"
 	"movi write zero {fwbl1 | u-boot} {device_number} {addr} - Read data from sd/mmc\n"
-	"movi read {u-boot | kernel | dtb} {device_number} {addr} - Read data from sd/mmc\n"
-	"movi write {fwbl1 | u-boot | kernel | dtb} {device_number} {addr} - Write data to sd/mmc\n"
+	"movi read {u-boot | kernel-3-5 | kernel-4-4 | dtb} {device_number} {addr} - Read data from sd/mmc\n"
+	"movi write {fwbl1 | u-boot | kernel-3-5 | kernel-4-4 | dtb} {device_number} {addr} - Write data to sd/mmc\n"
 	"movi read rootfs {device_number} {addr} [bytes(hex)] - Read rootfs data from sd/mmc by size\n"
 	"movi write rootfs {device_number} {addr} [bytes(hex)] - Write rootfs data to sd/mmc by size\n"
 	"movi read {sector#} {device_number} {bytes(hex)} {addr} - instead of this, you can use \"mmc read\"\n"

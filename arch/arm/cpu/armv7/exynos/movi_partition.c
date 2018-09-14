@@ -80,39 +80,47 @@ int init_raw_area_table(block_dev_desc_t * dev_desc, int location)
 	if (location == 0)
 		image[4].start_blk = image[4].start_blk + 1;
 
-	/* image 5 should be kernel */
+	/* image 5 should be kernel-3-5 */
 	image[5].start_blk = 2;//image[4].start_blk + MOVI_ENV_BLKCNT;
 	image[5].used_blk = MOVI_ZIMAGE_BLKCNT;
 	image[5].size = PART_SIZE_KERNEL;
 	image[5].attribute = 0x4;
-	strcpy(image[5].description, "kernel");
-	dbg("knl: %d\n", image[5].start_blk);
+	strcpy(image[5].description, "kernel-3-5");
+	dbg("kernel-3-5: %d\n", image[5].start_blk);
 
-	/* image 6 should be RFS */
-	image[6].start_blk = image[5].start_blk + MOVI_ZIMAGE_BLKCNT;
-	image[6].used_blk = MOVI_ROOTFS_BLKCNT;
-	image[6].size = PART_SIZE_ROOTFS;
-	image[6].attribute = 0x8;
-	strcpy(image[6].description, "rfs");
-	dbg("rfs: %d\n", image[6].start_blk);
+	/* image 6 should be kernel-4-4 */
+	image[6].start_blk = image[5].start_blk + MOVI_ZIMAGE_BLKCNT;;
+	image[6].used_blk = MOVI_ZIMAGE_BLKCNT;
+	image[6].size = PART_SIZE_KERNEL;
+	image[6].attribute = 0x4;
+	strcpy(image[6].description, "kernel-4-4");
+	dbg("kernel-3-5: %d\n", image[6].start_blk);
 
-	/* image 7 should be dtb */
-	image[7].start_blk = image[6].start_blk + MOVI_ROOTFS_BLKCNT;
-	image[7].used_blk = MOVI_DTB_BLKCNT;
-	image[7].size = PART_SIZE_DTB;
-	image[7].attribute = 0x5;
-	strcpy(image[7].description, "dtb");
-	dbg("dtb: %d\n", image[7].start_blk);
+	/* image 7 should be RFS */
+	image[7].start_blk = image[6].start_blk + MOVI_ZIMAGE_BLKCNT;
+	image[7].used_blk = MOVI_ROOTFS_BLKCNT;
+	image[7].size = PART_SIZE_ROOTFS;
+	image[7].attribute = 0x8;
+	strcpy(image[7].description, "rfs");
+	dbg("rfs: %d\n", image[7].start_blk);
 
-	/* image 8 should be bl2 */
-	image[8].start_blk = image[0].start_blk + MOVI_FWBL1_BLKCNT;
-	image[8].used_blk = MOVI_BL1_BLKCNT;
-	image[8].size = PART_SIZE_BL1;
-	image[8].attribute = 0x3;
-	strcpy(image[8].description, "bl2");
-	dbg("bl2: %d\n", image[8].start_blk);
+	/* image 8 should be dtb */
+	image[8].start_blk = image[7].start_blk + MOVI_ROOTFS_BLKCNT;
+	image[8].used_blk = MOVI_DTB_BLKCNT;
+	image[8].size = PART_SIZE_DTB;
+	image[8].attribute = 0x5;
+	strcpy(image[8].description, "dtb");
+	dbg("dtb: %d\n", image[8].start_blk);
 
-	for (i=8; i<15; i++) {
+	/* image 9 should be bl2 */
+	image[9].start_blk = image[0].start_blk + MOVI_FWBL1_BLKCNT;
+	image[9].used_blk = MOVI_BL1_BLKCNT;
+	image[9].size = PART_SIZE_BL1;
+	image[9].attribute = 0x3;
+	strcpy(image[9].description, "bl2");
+	dbg("bl2: %d\n", image[9].start_blk);
+
+	for (i=10; i<15; i++) {
 		raw_area_control.image[i].start_blk = 0;
 		raw_area_control.image[i].used_blk = 0;
 	}

@@ -1541,8 +1541,15 @@ static int set_partition_table_sdmmc()
 	ptable[pcount].flags = FASTBOOT_PTENTRY_FLAGS_USE_MOVI_CMD;
 	pcount++;
 
-	/* Kernel */
-	strcpy(ptable[pcount].name, "kernel");
+	/* Kernel-3-5 */
+	strcpy(ptable[pcount].name, "kernel-3-5");
+	ptable[pcount].start = 0;
+	ptable[pcount].length = 0;
+	ptable[pcount].flags = FASTBOOT_PTENTRY_FLAGS_USE_MOVI_CMD;
+	pcount++;
+
+	/* Kernel-4-4 */
+	strcpy(ptable[pcount].name, "kernel-4-4");
 	ptable[pcount].start = 0;
 	ptable[pcount].length = 0;
 	ptable[pcount].flags = FASTBOOT_PTENTRY_FLAGS_USE_MOVI_CMD;
@@ -1562,21 +1569,21 @@ static int set_partition_table_sdmmc()
 	ptable[pcount].flags = FASTBOOT_PTENTRY_FLAGS_USE_MOVI_CMD;
 	pcount++;
 
-	/* System */
+	/* rootfs_k35 */
 	get_mmc_part_info(dev_num, 2, &start, &count, &pid);
 	if (pid != 0x83)
 		goto part_type_error;
-	strcpy(ptable[pcount].name, "system");
+	strcpy(ptable[pcount].name, "rootfs_k35");
 	ptable[pcount].start = start * CFG_FASTBOOT_SDMMC_BLOCKSIZE;
 	ptable[pcount].length = count * CFG_FASTBOOT_SDMMC_BLOCKSIZE;
 	ptable[pcount].flags = FASTBOOT_PTENTRY_FLAGS_USE_MMC_CMD;
 	pcount++;
 
-	/* Data */
+	/* rootfs_k44 */
 	get_mmc_part_info(dev_num, 3, &start, &count, &pid);
 	if (pid != 0x83)
 		goto part_type_error;
-	strcpy(ptable[pcount].name, "userdata");
+	strcpy(ptable[pcount].name, "rootfs_k44");
 	ptable[pcount].start = start * CFG_FASTBOOT_SDMMC_BLOCKSIZE;
 	ptable[pcount].length = count * CFG_FASTBOOT_SDMMC_BLOCKSIZE;
 	ptable[pcount].flags = FASTBOOT_PTENTRY_FLAGS_USE_MMC_CMD;
